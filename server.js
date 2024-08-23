@@ -13,14 +13,7 @@ const allowedOrigins = [
   "http://localhost:3000",
 ];
 
-const io = new Server(server, {
-  cors: {
-    origin: allowedOrigins, // Allow multiple origins
-    methods: ["GET", "POST"],
-    credentials: true,
-  },
-});
-
+// Apply CORS middleware for Express
 app.use(
   cors({
     origin: allowedOrigins, // Allow multiple origins
@@ -28,6 +21,15 @@ app.use(
     credentials: true,
   })
 );
+
+// Apply CORS settings specifically for Socket.io
+const io = new Server(server, {
+  cors: {
+    origin: allowedOrigins, // Allow multiple origins
+    methods: ["GET", "POST"],
+    credentials: true,
+  },
+});
 
 app.get("/", (req, res) => {
   res.send("Hello World!");
