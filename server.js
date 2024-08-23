@@ -3,13 +3,19 @@ import { Server } from "socket.io";
 import { createServer } from "http";
 import cors from "cors";
 
-const port = 3000;
+const port = 8000;
 
 const app = express();
 const server = createServer(app);
+
+const allowedOrigins = [
+  "https://healthcheak.vercel.app",
+  "http://localhost:3000",
+];
+
 const io = new Server(server, {
   cors: {
-    origin: "https://healthcheak.vercel.app/", // Adjust to match the client URL and port
+    origin: allowedOrigins, // Allow multiple origins
     methods: ["GET", "POST"],
     credentials: true,
   },
@@ -17,7 +23,7 @@ const io = new Server(server, {
 
 app.use(
   cors({
-    origin: "https://healthcheak.vercel.app/", // Adjust to match the client URL and port
+    origin: allowedOrigins, // Allow multiple origins
     methods: ["GET", "POST"],
     credentials: true,
   })
