@@ -3,14 +3,14 @@ import { Server } from "socket.io";
 import { createServer } from "http";
 import cors from "cors";
 
-const port = 8000;
+const port = process.env.PORT || 8000; // Use the port defined by the hosting provider or default to 8000
 
 const app = express();
 const server = createServer(app);
 
 const allowedOrigins = [
-  "https://healthcheak.vercel.app",
-  "http://localhost:3000",
+  "https://healthcheak.vercel.app", // Production URL
+  "http://localhost:3000",          // Development URL
 ];
 
 // Apply CORS middleware for Express
