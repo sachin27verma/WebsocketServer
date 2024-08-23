@@ -12,7 +12,6 @@ const allowedOrigins = [
   "https://healthcheak.vercel.app", // Production URL
   "http://localhost:3000",          // Development URL
 ];
-
 // Apply CORS middleware for Express
 app.use(
   cors({
@@ -36,22 +35,32 @@ app.get("/", (req, res) => {
 });
 
 io.on("connection", (socket) => {
-  console.log("User Connected", socket.id);
 
-  socket.on("message", ({ room, message }) => {
-    const messageData = { room, message, id: socket.id };
-    console.log(messageData);
-    socket.to(room).emit("receive-message", messageData);
-  });
+  try {
 
-  socket.on("join-room", (room) => {
-    socket.join(room);
-    console.log(`User joined room ${room}`);
-  });
+    console.log("User Connected", socket.id);
 
-  socket.on("disconnect", () => {
-    console.log("User Disconnected", socket.id);
-  });
+    socket.on("message", ({ room, message }) => {
+      const messageData = { room, message, id: socket.id };
+      console.log(messageData);
+      socket.to(room).emit("receive-message", messageData);
+    });
+  
+    socket.on("join-room", (room) => {
+      socket.join(room);
+      console.log(`User joined room ${room}`);
+    });
+  
+    socket.on("disconnect", () => {
+      console.log("User Disconnected", socket.id);
+    });
+    
+  } catch (error) {
+
+    console.log(error);
+    
+  }
+ 
 });
 
 server.listen(port, () => {
